@@ -9,6 +9,18 @@ model = pickle.load(open('model.pkl', 'rb'))
 def home():
     return render_template('index.html')
 
+@app.route('/predict_api',methods=['POST'])
+
+def predict_api():
+    data = request.json['data']
+    print(data)
+    print(np.array(list(data.values())).reshape(1,-1))
+    new_data = np.array(list(data.values())).reshape(1,-1)
+    output = model.predict(new_data)
+    print(output[0])
+    return jsonify(output[0])
+
+
 @app.route('/predict',methods=['POST'])
 def predict():
     '''
